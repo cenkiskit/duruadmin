@@ -1,12 +1,22 @@
-export const product = {
-    id: null,
-    title: null,
-    price: null,
-    imageList: null,
-    categoryId: null
+export const productObj = (
+    id,
+    title,
+    content,
+    price,
+    imageList,
+    categoryId,
+) => {
+    return {
+        id: id,
+        title: title,
+        content: content,
+        price: price,
+        imageList: imageList,
+        categoryId: categoryId
+    }
 }
 
-export const category = {
+export const categoryObj = {
     id: null,
     title: null,
 }

@@ -1,23 +1,18 @@
 import React from 'react';
 import ImageUploading from 'react-images-uploading';
 
-const ImageUploadArea = ({setImageList}) => {
-    const [images, setImages] = React.useState([]);
+const ImageUploadArea = ({ setImageList, images }) => {
+
     const maxNumber = 69;
 
     const onChange = (imageList, addUpdateIndex) => {
-        // data for submit
-        console.log(imageList, addUpdateIndex);
-        setImages(imageList);
         setImageList(imageList)
     };
-    console.log('Image list:', images)
 
     const _onClick = (func) => {
-        console.log('Clickeld.')
         func()
     }
-
+console.log('imagelist:', images)
     return (
         <div className="App">
             <ImageUploading
@@ -39,7 +34,7 @@ const ImageUploadArea = ({setImageList}) => {
                     <div >
                         <button
                             onClick={() => {
-                                _onClick(onImageUpload)()
+                                _onClick(onImageUpload)
                             }}
                             style={{
                                 width: '100%',
@@ -53,7 +48,7 @@ const ImageUploadArea = ({setImageList}) => {
                             }}
                             {...dragProps}
                         >
-
+                            {console.log('imageli:', imageList)}
                             <div style={{
                                 display: 'flex',
                                 flexWrap: 'wrap',
@@ -124,4 +119,4 @@ const ImageUploadArea = ({setImageList}) => {
         </div>
     );
 }
-export default ImageUploadArea;
+export default React.memo(ImageUploadArea);

@@ -4,36 +4,40 @@ import './App.css';
 import { db, firebaseConfig } from './firebase';
 import CreateProduct from './Sections/Screens/CreateProduct';
 import { getFirestore, collection, getDocs, addDoc } from 'firebase/firestore/lite';
+import CreateStore from './Redux/CreateStore';
+import { Provider } from 'react-redux';
+import LoadingOverlay from './Sections/Components/LoadingOverlay';
+import ListProducts from './Sections/Screens/ListProducts';
+import Header from './Sections/Components/Header';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from "react-router-dom";
+import EditProduct from './Sections/Screens/EditProduct';
+import Alert from './Sections/Components/Alert';
+
+const { store } = CreateStore();
 
 function App() {
-
-  useEffect(() => {
-    // const app = initializeApp(firebaseConfig);
-    // getCategories();
-    // getProducts();
-  }, [])
-
-  const getCategories = async () => {
-    const categoryCollection = collection(db, 'categories');
-    const categorySnapshot = await getDocs(categoryCollection);
-    
-    const categoryList = categorySnapshot.docs.map(doc => doc.data());
-    console.log('Categories:', categoryList)
-    return categoryList;
-  }
-
-
-  const getProducts = async () => {
-    const productCollection = collection(db, 'products');
-    const productSnapshot = await getDocs(productCollection);
-    
-    const productList = productSnapshot.docs.map(doc => doc.data());
-    console.log('Categories:', productList)
-    return productList;
-  }
-
   return (
-    <CreateProduct />
+    <Provider store={store}>
+      <div style={{
+        flex: 1
+      }}>
+        <BrowserRouter>
+          <Header />
+          <LoadingOverlay />
+          <Alert />
+          <Routes>
+            <Route index element={<ListProducts />} />
+            <Route path='yeni-urun' element={<CreateProduct />} />
+            <Route path="urun-duzenle/:productId" element={<EditProduct />} />
+
+          </Routes>
+        </BrowserRouter>
+      </div>
+    </Provider>
   )
 }
 

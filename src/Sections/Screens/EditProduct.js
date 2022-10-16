@@ -1,45 +1,48 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { addDoc, collection } from 'firebase/firestore/lite'
 import React, { useEffect, useState } from 'react'
 import { Button, Form } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { db } from '../../firebase'
+import { useLocation, useNavigate, useParams, useRoutes } from 'react-router-dom'
 import AddProductForm from '../Components/AddProductForm'
-import Header from '../Components/Header'
 import ImageUploadArea from '../Components/ImageUploadArea'
 import { productObj } from '../Entity/Models'
 import { ActionCreators as InitialActions, Selectors as InitialSelectors } from '../Redux/InitialRedux'
 
-export default function CreateProduct() {
+export default function EditProduct() {
 
-    const [imageList, setImageList] = useState([]);
-    const [title, setTitle] = useState('');
-    const [content, setContent] = useState('');
-    const [price, setPrice] = useState('');
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const added = useSelector(InitialSelectors.added)
     const productList = useSelector(InitialSelectors.productList)
-    console.log('Pro:', productList)
 
-   
+    const { state } = useLocation();
+    const { data } = state;
+
+    const [title, setTitle] = useState(data?.title);
+    const [content, setContent] = useState(data?.content);
+    const [price, setPrice] = useState(data?.price);
+    const [imageList, setImageList] = useState(data?.imageList || []);
+
+
     useEffect(() => {
         dispatch(InitialActions.fetchInitial());
     }, [])
 
     const _onPressSave = () => {
         const body = productObj(
-            null,
+            data?.id,
             title,
             content,
             price,
             imageList,
-            1
+            1,
         )
-
-        dispatch(InitialActions.addProduct(body))
+        
+        dispatch(InitialActions.updateProduct({
+            data: body,
+            fbId: data?.fbId
+        }))
     }
 
     useEffect(() => {
@@ -49,7 +52,7 @@ export default function CreateProduct() {
             setTitle('');
             setContent('');
             setPrice('');
-            navigate('/')
+            navigate('/');
         }
     }, [added, dispatch])
 
@@ -91,7 +94,7 @@ export default function CreateProduct() {
                     }}>
                         <Button
                             onClick={_onPressSave} variant="primary" type="submit">
-                            Ürün Ekle
+                            Ürün Güncelle
                         </Button>
                     </div>
                 </div>
