@@ -11,8 +11,6 @@ export default function ListProducts() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    console.log('Val:', productList)
-
     useEffect(() => {
         dispatch(InitialActions.fetchInitial());
     }, [])
@@ -27,7 +25,6 @@ export default function ListProducts() {
     }, [productList]);
 
     const _renderProducts = () => {
-        console.log('Curr:', currentData)
         if (currentData.length > 10) {
             const rendered = currentData.slice(0 + (pageIndex * 10), 10 + (pageIndex * 10))
             return rendered.map((value, index) => {
@@ -43,7 +40,6 @@ export default function ListProducts() {
 
     const _setPage = (value) => {
         const maxPage = Math.ceil(productList.length / 10);
-        console.log('Maxpae:', maxPage)
         if (value === '+') {
             if (pageIndex < maxPage - 1) {
                 setPageIndex(pageIndex + 1)
@@ -70,7 +66,6 @@ export default function ListProducts() {
             const val = e.nativeEvent.target.value;
             if (val !== '') {
                 const newData = productList.filter(x => x.title.includes(val));
-                console.log('ValE:', newData)
                 setCurrentData(newData);
             } else {
                 setCurrentData(productList);

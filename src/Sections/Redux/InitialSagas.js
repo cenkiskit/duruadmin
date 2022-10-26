@@ -1,7 +1,6 @@
 import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc } from 'firebase/firestore/lite';
 import { call, fork, put, select, takeEvery } from 'redux-saga/effects';
 import { db } from '../../firebase';
-import { productObj } from '../Entity/Models';
 import { ActionCreators as InitialActions, Selectors as InitialSelectors, Types as InitialTypes } from './InitialRedux';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -31,7 +30,6 @@ function* workerInitial() {
         if (list.length === 0 && !loading) {
             yield put(InitialActions.setLoading(true))
             const productList = yield call(workerGetProductList)
-            console.log('list:', productList)
             yield put(InitialActions.setProductList(productList));
             yield put(InitialActions.setLoading(false))
         }
@@ -59,10 +57,6 @@ function* workerAddProduct(action) {
             product.imageList = newImageList
         }
 
-        console.log('Product:', product)
-
-
-
         const response = yield addDoc(collection(db, "products"), JSON.parse(JSON.stringify(product)));
 
         const productList = yield select(InitialSelectors.productList);
@@ -86,9 +80,18 @@ function* workerUpdateProduct(action) {
 
         const data = action.payload.data;
         const fbId = action.payload.fbId;
+        const productList = yield select(InitialSelectors.productList)
 
         const currentProduct = yield doc(db, 'products', fbId);
         yield updateDoc(currentProduct, JSON.parse(JSON.stringify(data)));
+
+        const newList = productList.slice();
+        data.fbId = fbId;
+        const item = newList.find(x => x.fbId === fbId);
+        const index = newList.indexOf(item);
+        newList[index] = data
+
+        yield put(InitialActions.setProductList(newList))
         yield put(InitialActions.setAdded(true))
         yield put(InitialActions.setLoading(false))
 

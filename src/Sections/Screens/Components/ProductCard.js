@@ -3,15 +3,16 @@ import { BiEdit } from 'react-icons/bi'
 import { MdDelete } from 'react-icons/md'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+import { productObj } from '../../Entity/Models'
 import { ActionCreators } from '../../Redux/InitialRedux'
+import ProductSwitch from './ProductSwitch'
+import { ActionCreators as InitialActions, Selectors as InitialSelectors } from '../../Redux/InitialRedux'
 
 export default function ProductCard({ index, value }) {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    console.log('Value:', value)
 
     const _onClickEdit = () => {
-        console.log('geliyor mu')
         navigate(`/urun-duzenle/${value?.id}`, {
             state: {
                 data: value
@@ -22,7 +23,24 @@ export default function ProductCard({ index, value }) {
     const _onClickDelete = () => {
         dispatch(ActionCreators.setDeleteAlert(value))
     }
-    
+
+    const _changeState = () => {
+        const body = productObj(
+            value?.id,
+            value?.title,
+            value?.content,
+            value?.price,
+            value?.imageList,
+            value?.categoryId,
+            !value?.isActive
+        )
+
+        dispatch(InitialActions.updateProduct({
+            data: body,
+            fbId: value?.fbId
+        }))
+    }
+
     return (
         <div style={{
 
@@ -53,11 +71,13 @@ export default function ProductCard({ index, value }) {
             <div style={{
                 width: '20%',
                 display: 'flex',
-                justifyContent: 'center'
+                justifyContent: 'center',
+                alignItems: 'center'
             }}>
                 <a
                     onClick={_onClickEdit}
                     style={{
+                        cursor: 'pointer',
                         width: 40,
                         height: 40,
                         display: 'flex',
@@ -75,13 +95,13 @@ export default function ProductCard({ index, value }) {
                 <a
                     onClick={_onClickDelete}
                     style={{
+                        cursor: 'pointer',
                         width: 40,
                         height: 40,
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
                         border: '1px solid transparent',
-                        marginLeft: 10
                     }}>
                     <MdDelete style={{
                         width: 30,
@@ -89,6 +109,8 @@ export default function ProductCard({ index, value }) {
                         color: 'red',
                     }} />
                 </a>
+
+                <ProductSwitch state={value?.isActive} changeState={_changeState} />
             </div>
         </div>
     )

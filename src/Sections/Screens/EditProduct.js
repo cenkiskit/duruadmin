@@ -21,9 +21,9 @@ export default function EditProduct() {
 
     const [title, setTitle] = useState(data?.title);
     const [content, setContent] = useState(data?.content);
+    const [categoryId, setCategory] = useState(data?.categoryId || 0);
     const [price, setPrice] = useState(data?.price);
     const [imageList, setImageList] = useState(data?.imageList || []);
-
 
     useEffect(() => {
         dispatch(InitialActions.fetchInitial());
@@ -36,7 +36,8 @@ export default function EditProduct() {
             content,
             price,
             imageList,
-            1,
+            categoryId,
+            data?.isActive
         )
         
         dispatch(InitialActions.updateProduct({
@@ -52,6 +53,7 @@ export default function EditProduct() {
             setTitle('');
             setContent('');
             setPrice('');
+            setCategory('');
             navigate('/');
         }
     }, [added, dispatch])
@@ -77,9 +79,11 @@ export default function EditProduct() {
                     <AddProductForm
                         title={title}
                         content={content}
+                        categoryId={categoryId}
                         price={price}
                         setTitle={setTitle}
                         setContent={setContent}
+                        setCategory={setCategory}
                         setPrice={setPrice} />
 
                     <Form.Label>Ürün Fotoğrafları</Form.Label>

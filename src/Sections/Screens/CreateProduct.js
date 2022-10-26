@@ -16,14 +16,13 @@ export default function CreateProduct() {
     const [imageList, setImageList] = useState([]);
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
+    const [categoryId, setCategory] = useState(null);
     const [price, setPrice] = useState('');
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const added = useSelector(InitialSelectors.added)
     const productList = useSelector(InitialSelectors.productList)
-    console.log('Pro:', productList)
-
    
     useEffect(() => {
         dispatch(InitialActions.fetchInitial());
@@ -36,7 +35,8 @@ export default function CreateProduct() {
             content,
             price,
             imageList,
-            1
+            categoryId,
+            true
         )
 
         dispatch(InitialActions.addProduct(body))
@@ -49,6 +49,7 @@ export default function CreateProduct() {
             setTitle('');
             setContent('');
             setPrice('');
+            setCategory('');
             navigate('/')
         }
     }, [added, dispatch])
@@ -74,9 +75,11 @@ export default function CreateProduct() {
                     <AddProductForm
                         title={title}
                         content={content}
+                        categoryId={categoryId}
                         price={price}
                         setTitle={setTitle}
                         setContent={setContent}
+                        setCategory={setCategory}
                         setPrice={setPrice} />
 
                     <Form.Label>Ürün Fotoğrafları</Form.Label>

@@ -5,6 +5,7 @@ export const productObj = (
     price,
     imageList,
     categoryId,
+    isActive
 ) => {
     return {
         id: id,
@@ -12,7 +13,8 @@ export const productObj = (
         content: content,
         price: price,
         imageList: imageList,
-        categoryId: categoryId
+        categoryId: categoryId,
+        isActive: isActive
     }
 }
 

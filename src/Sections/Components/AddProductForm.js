@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Form from 'react-bootstrap/Form';
 import { InputGroup } from 'react-bootstrap';
 
@@ -8,9 +8,11 @@ export default function AddProductForm(props) {
         setTitle,
         setContent,
         setPrice,
+        setCategory,
         title,
         content,
-        price
+        price,
+        categoryId,
     } = props;
 
     const _setTitle = (e) => {
@@ -26,6 +28,16 @@ export default function AddProductForm(props) {
     const _setPrice = (e) => {
         const value = e.nativeEvent.target.value;
         setPrice(value)
+    }
+
+    const changeCategory = (e) => {
+        const value = e.nativeEvent.target.value;
+
+        if(value !== 'Kategori Seçiniz'){
+            setCategory(value);
+        }else{
+            setCategory('0');
+        }
     }
 
     return (
@@ -47,11 +59,15 @@ export default function AddProductForm(props) {
             </Form.Group>
 
             <Form.Label>Kategori</Form.Label>
-            <Form.Select aria-label="Kategori Seçiniz">
+            <Form.Select aria-label="Kategori Seçiniz" value={categoryId || 0}
+                onChange={(e) => changeCategory(e)}>
                 <option>Kategori Seçiniz</option>
-                <option value="1">Saksılar</option>
-                <option value="2">Bitkiler</option>
-                <option value="3">Çelenkler</option>
+                <option value="1">Saksı</option>
+                <option value="2">Bitki</option>
+                <option value="3">Çelenk</option>
+                <option value="4">Teraryum</option>
+                <option value="5">Buket</option>
+                <option value="6">Aranjman</option>
             </Form.Select>
 
             <Form.Label style={{

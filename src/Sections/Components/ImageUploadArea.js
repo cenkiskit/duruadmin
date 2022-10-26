@@ -12,7 +12,7 @@ const ImageUploadArea = ({ setImageList, images }) => {
     const _onClick = (func) => {
         func()
     }
-console.log('imagelist:', images)
+
     return (
         <div className="App">
             <ImageUploading
@@ -48,7 +48,6 @@ console.log('imagelist:', images)
                             }}
                             {...dragProps}
                         >
-                            {console.log('imageli:', imageList)}
                             <div style={{
                                 display: 'flex',
                                 flexWrap: 'wrap',
@@ -78,7 +77,6 @@ console.log('imagelist:', images)
                                                             borderRadius: 10,
                                                             marginTop: 5
                                                         }} onClick={() => {
-                                                            console.log('deleting...')
                                                             onImageRemove(index)
                                                         }}>Sil</button>
                                                 </div>

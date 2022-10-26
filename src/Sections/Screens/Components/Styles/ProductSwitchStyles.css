@@ -1,0 +1,26 @@
+.containerSwitch {
+    height: 25px;
+    width: 50px;
+    background-color: #cacccd;
+    border-radius: 50px;
+    align-items: center;
+    display: flex;
+    padding: 0px 0px 0px 5px;
+    margin-left: 10px;
+}
+
+.subContainerSwitch {
+    height: 18px;
+    background-color: white;
+    width: 25px;
+    border-radius: 20px;
+    transition: all 0.2s ease-in-out;
+}
+
+.subContainerSwitch.switchOn {
+    margin-left: 15px;
+}
+
+.containerSwitch.switchOn {
+    background-color: #3bb77e;
+}
