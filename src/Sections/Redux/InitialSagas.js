@@ -102,10 +102,6 @@ function* workerUpdateProduct(action) {
     }
 }
 
-function* workerAddCategory() {
-
-}
-
 function* workerGetProductList() {
     const productCollection = collection(db, 'products');
     const productSnapshot = yield getDocs(productCollection);
@@ -115,6 +111,10 @@ function* workerGetProductList() {
         return product;
     });
     return productList;
+}
+
+function* workerAddCategory() {
+
 }
 
 function* workerGetCategoryList() {

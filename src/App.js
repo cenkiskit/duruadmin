@@ -16,6 +16,7 @@ import {
 } from "react-router-dom";
 import EditProduct from './Sections/Screens/EditProduct';
 import Alert from './Sections/Components/Alert';
+import Orders from './Sections/Screens/Orders';
 
 const { store } = CreateStore();
 
@@ -32,6 +33,7 @@ function App() {
           <Routes>
             <Route index element={<ListProducts />} />
             <Route path='yeni-urun' element={<CreateProduct />} />
+            <Route path='siparisler' element={<Orders />} />
             <Route path="urun-duzenle/:productId" element={<EditProduct />} />
 
           </Routes>

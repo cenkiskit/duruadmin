@@ -54,9 +54,27 @@ export default function Header() {
                 <span style={{
                     color: '#3bb77e',
                     textAlign:'center'
-                }}>Yeni Ürün Oluştur</span>
+                }}>Ürün Ekle</span>
             </a>
+            <a
+                onClick={() => navigate('/siparisler')}
+                style={{
+                    // backgroundColor: '#3bb77e',
+                    width: 150,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    display: 'flex',
+                    cursor:'pointer',
+                    marginLeft: 5,
+                    color: 'white',
+                    boxShadow: '1px 2px 9px rgba(0,0,0,0.1)',
 
+                }}>
+                <span style={{
+                    color: '#3bb77e',
+                    textAlign:'center'
+                }}>Siparişler</span>
+            </a>
             {/* <a style={{
                 backgroundColor: '#3bb77e',
                 width: 200,
