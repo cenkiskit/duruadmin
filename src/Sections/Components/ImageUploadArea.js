@@ -6,6 +6,7 @@ const ImageUploadArea = ({ setImageList, images }) => {
     const maxNumber = 69;
 
     const onChange = (imageList, addUpdateIndex) => {
+        console.log('İMAGELİS:', imageList)
         setImageList(imageList)
     };
 

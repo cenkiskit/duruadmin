@@ -53,7 +53,9 @@ function* workerAddProduct(action) {
                     data_url: value?.data_url,
                     name: value?.file?.name
                 })
+                return null
             })
+            console.log('Prodimages:', newImageList )
             product.imageList = newImageList
         }
 
@@ -84,9 +86,30 @@ function* workerUpdateProduct(action) {
 
         const currentProduct = yield doc(db, 'products', fbId);
         yield updateDoc(currentProduct, JSON.parse(JSON.stringify(data)));
-
+        console.log('Currentpro:', data)
         const newList = productList.slice();
         data.fbId = fbId;
+
+        if (data.imageList.length > 0) {
+            let newImageList = [];
+            data.imageList.map((value) => {
+                console.log('VALUE:', value)
+                if(!value?.name){
+                    newImageList.push({
+                        data_url: value?.data_url,
+                        name: value?.file?.name
+                    })
+                }else{
+                    newImageList.push(value);
+                }
+                return null
+            })
+            console.log('Prodimages:', newImageList )
+            data.imageList = newImageList
+        }
+
+
+
         const item = newList.find(x => x.fbId === fbId);
         const index = newList.indexOf(item);
         newList[index] = data
