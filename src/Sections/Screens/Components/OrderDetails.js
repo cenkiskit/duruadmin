@@ -10,7 +10,7 @@ export default function OrderDetails() {
     const _onClose = () => {
         dispatch(ActionCreators.setSelectedOrder(null))
     }
-    
+
     const _renderOrderContent = () => {
         return selectedOrder.products.map(value => {
             return <li>{value?.title}</li>
@@ -90,7 +90,7 @@ export default function OrderDetails() {
                 <div style={{
                     marginTop: 10
                 }}>
-                    <span style={{ fontWeight: 'bold' }}>Sipariş Tutarı:</span> 123TL
+                    <span style={{ fontWeight: 'bold' }}>Sipariş Tutarı:</span> {selectedOrder?.totalPrice ? selectedOrder?.totalPrice + '₺' : '-'}
                 </div>
                 <div style={{
                     marginTop: 10
