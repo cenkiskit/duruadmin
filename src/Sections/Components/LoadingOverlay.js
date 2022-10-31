@@ -12,7 +12,7 @@ export default function LoadingOverlay() {
             width: '100%',
             height: '100%',
             position: 'absolute',
-            zIndex: 1,
+            zIndex: 100,
             justifyContent: 'center',
             alignItems: 'center',
             display: 'flex'

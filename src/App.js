@@ -17,6 +17,7 @@ import {
 import EditProduct from './Sections/Screens/EditProduct';
 import Alert from './Sections/Components/Alert';
 import Orders from './Sections/Screens/Orders';
+import OrderDetails from './Sections/Screens/Components/OrderDetails';
 
 const { store } = CreateStore();
 
@@ -27,8 +28,9 @@ function App() {
         flex: 1
       }}>
         <BrowserRouter>
-          <Header />
           <LoadingOverlay />
+          <OrderDetails />
+          <Header />
           <Alert />
           <Routes>
             <Route index element={<ListProducts />} />

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Selectors as OrderSelector, ActionCreators as OrderActions } from '../Redux/OrderRedux'
 import OrderCard from './Components/OrderCard';
 import ListTopBar from './Components/ListTopBar';
+import OrderDetails from './Components/OrderDetails';
 
 export default function Orders() {
     const orderList = useSelector(OrderSelector.orderList);
@@ -75,14 +76,21 @@ export default function Orders() {
         }
     };
 
+    const _orderDetails = (data) => {
+
+    }
+
     return (
         <div style={{
             flex: 1,
             justifyContent: 'center',
             display: 'flex',
             marginTop: 50,
-            marginBottom: 50
+            marginBottom: 50,
+            position: 'relative',
+            alignItems: 'center'
         }}>
+            {/* <OrderDetails /> */}
             <div style={{
                 width: '80%'
             }}>

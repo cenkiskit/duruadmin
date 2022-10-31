@@ -2,7 +2,8 @@ export const NS = 'order';
 
 const INITIAL_STATE = {
     orderList: [],
-    loading: false
+    loading: false,
+    selectedOrder: null,
 };
 
 export const Types = {
@@ -11,11 +12,13 @@ export const Types = {
     UPDATE_ORDER: NS + '/update-order',
     DELETE_ORDER: NS + '/delete-order',
     SET_LOADING: NS + '/set-loading',
+    SET_SELECTED_ORDER: NS + '/set-selected-order'
 };
 
 export const Selectors = {
     loading: state => state[NS].loading,
     orderList: state => state[NS].orderList,
+    selectedOrder: state => state[NS].selectedOrder,
 };
 
 export const ActionCreators = {
@@ -38,6 +41,10 @@ export const ActionCreators = {
         type: Types.SET_LOADING,
         payload: data,
     }),
+    setSelectedOrder: data => ({
+        type: Types.SET_SELECTED_ORDER,
+        payload: data,
+    }),
 };
 
 export const Reducer = (state = INITIAL_STATE, action) => {
@@ -51,6 +58,11 @@ export const Reducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 loading: action.payload
+            };
+        case Types.SET_SELECTED_ORDER:
+            return {
+                ...state,
+                selectedOrder: action.payload
             };
         default:
             return state;
