@@ -11,7 +11,6 @@ export default function Orders() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log('DİDMO')
         dispatch(OrderActions.getOrders());
     }, [])
 
@@ -22,7 +21,8 @@ export default function Orders() {
 
     useEffect(() => {
         if (orderList.length > 0) {
-            setCurrentData(orderList)
+            const data = orderList.sort((a, b) => b.id - a.id)
+            setCurrentData(data)
         }
     }, [orderList])
 
@@ -30,11 +30,11 @@ export default function Orders() {
         if (currentData.length > 10) {
             const rendered = currentData.slice(0 + (pageIndex * 10), 10 + (pageIndex * 10))
             return rendered.map((value, index) => {
-                return <OrderCard index={index + 10 * pageIndex} value={value} />;
+                return <OrderCard completed={value?.completed} index={index + 10 * pageIndex} value={value} />;
             })
         } else {
             return currentData.map((value, index) => {
-                return <OrderCard index={index} value={value} />;
+                return <OrderCard completed={value?.completed} index={index} value={value} />;
             })
         }
 
@@ -98,7 +98,7 @@ export default function Orders() {
                     fontSize: 20,
                     fontWeight: 'bold'
                 }}>
-                     <div style={{
+                    <div style={{
                         width: '10%',
                         display: 'flex',
                         justifyContent: 'center',
@@ -109,7 +109,7 @@ export default function Orders() {
                         backgroundColor: 'white'
                     }} />
                     <div style={{
-                        width: '20%',
+                        width: '15%',
                         display: 'flex',
                         justifyContent: 'center',
                     }}>{"Sipariş No."}</div>
@@ -120,7 +120,7 @@ export default function Orders() {
                     }} />
                     <div style={{
                         textAlign: 'center',
-                        width: '35%',
+                        width: '20%',
                     }}>{'Gönderen Adı'}</div>
                     <div style={{
                         width: 2,
@@ -131,6 +131,15 @@ export default function Orders() {
                         width: '10%',
                         textAlign: 'center'
                     }}>{'Tutar'}</div>
+                    <div style={{
+                        width: 2,
+                        height: '80%',
+                        backgroundColor: 'white'
+                    }} />
+                    <div style={{
+                        width: '15%',
+                        textAlign: 'center'
+                    }}>{'Tarih'}</div>
                     <div style={{
                         width: 2,
                         height: '80%',
@@ -150,7 +159,7 @@ export default function Orders() {
                         width: '10%',
                         display: 'flex',
                         justifyContent: 'center',
-                    }}>{'Sil'}</div>
+                    }}>{'Detay'}</div>
                 </div>
 
                 {/* <ListTopBar

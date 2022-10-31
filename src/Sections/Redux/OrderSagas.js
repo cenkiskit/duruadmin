@@ -2,6 +2,7 @@ import { collection, deleteDoc, doc, getDocs, updateDoc } from 'firebase/firesto
 import { call, fork, put, select, takeEvery } from 'redux-saga/effects';
 import { db } from '../../firebase';
 import { ActionCreators as OrderActions, Selectors as OrderSelectors, Types as OrderTypes } from './OrderRedux';
+import { ActionCreators as InitialActions, } from './InitialRedux';
 
 function* watcherGetOrders() {
     yield takeEvery(OrderTypes.GET_ORDERS, workerGetOrders);
@@ -18,10 +19,8 @@ function* watcherDeleteOrder() {
 
 function* workerGetOrders() {
     try {
-        console.log('GETORDERS')
         yield put(OrderActions.setLoading(true))
         const orderList = yield call(workerGetOrderList)
-        console.log('Orderlist:', orderList)
         yield put(OrderActions.setOrders(orderList));
 
     } catch (error) {
@@ -43,27 +42,25 @@ function* workerGetOrderList() {
 
 function* workerUpdateOrder(action) {
     try {
-        yield put(OrderActions.setLoading(true))
+        yield put(InitialActions.setLoading(true))
+        const data = action.payload;
 
-        const data = action.payload.data;
-        const fbId = action.payload.fbId;
-        const productList = yield select(OrderSelectors.productList)
+        const orderList = yield select(OrderSelectors.orderList)
 
-        const currentProduct = yield doc(db, 'products', fbId);
-        yield updateDoc(currentProduct, JSON.parse(JSON.stringify(data)));
+        const currentOrder = yield doc(db, 'orders', data?.fbId);
+        yield updateDoc(currentOrder, JSON.parse(JSON.stringify(data)));
 
-        const newList = productList.slice();
-        data.fbId = fbId;
-        const item = newList.find(x => x.fbId === fbId);
+        const newList = orderList.slice();
+
+        const item = newList.find(x => x.fbId === data?.fbId);
         const index = newList.indexOf(item);
         newList[index] = data
 
-        yield put(OrderActions.setProductList(newList))
-        yield put(OrderActions.setAdded(true))
-        yield put(OrderActions.setLoading(false))
+        yield put(OrderActions.setOrders(newList))
+        yield put(InitialActions.setLoading(false))
 
     } catch (error) {
-        yield put(OrderActions.setLoading(false))
+        yield put(InitialActions.setLoading(false))
         console.log('Update error:', error);
 
     }
