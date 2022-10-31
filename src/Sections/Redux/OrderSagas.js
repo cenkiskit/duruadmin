@@ -1,5 +1,5 @@
-import { deleteDoc, doc, updateDoc } from 'firebase/firestore/lite';
-import { fork, put, select, takeEvery } from 'redux-saga/effects';
+import { collection, deleteDoc, doc, getDocs, updateDoc } from 'firebase/firestore/lite';
+import { call, fork, put, select, takeEvery } from 'redux-saga/effects';
 import { db } from '../../firebase';
 import { ActionCreators as OrderActions, Selectors as OrderSelectors, Types as OrderTypes } from './OrderRedux';
 
@@ -18,12 +18,27 @@ function* watcherDeleteOrder() {
 
 function* workerGetOrders() {
     try {
+        console.log('GETORDERS')
         yield put(OrderActions.setLoading(true))
+        const orderList = yield call(workerGetOrderList)
+        console.log('Orderlist:', orderList)
+        yield put(OrderActions.setOrders(orderList));
 
     } catch (error) {
         yield put(OrderActions.setLoading(false))
         console.log('Order error:', error);
     }
+}
+
+function* workerGetOrderList() {
+    const orderCollection = collection(db, 'orders');
+    const orderSnapshot = yield getDocs(orderCollection);
+    const orderList = orderSnapshot.docs.map(doc => {
+        const order = doc.data();
+        order.fbId = doc.id;
+        return order;
+    });
+    return orderList;
 }
 
 function* workerUpdateOrder(action) {

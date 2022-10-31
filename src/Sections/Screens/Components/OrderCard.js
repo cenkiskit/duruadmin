@@ -13,24 +13,32 @@ export default function OrderCard({ index, value }) {
     const dispatch = useDispatch()
 
     const _onClickDelete = () => {
-        dispatch(ActionCreators.setDeleteAlert(value))
+        // dispatch(ActionCreators.setDeleteAlert(value))
     }
 
     const _changeState = () => {
-        const body = productObj(
-            value?.id,
-            value?.title,
-            value?.content,
-            value?.price,
-            value?.imageList,
-            value?.categoryId,
-            !value?.isActive
-        )
+        // const body = productObj(
+        //     value?.id,
+        //     value?.title,
+        //     value?.content,
+        //     value?.price,
+        //     value?.imageList,
+        //     value?.categoryId,
+        //     !value?.isActive
+        // )
 
-        dispatch(InitialActions.updateProduct({
-            data: body,
-            fbId: value?.fbId
-        }))
+        // dispatch(InitialActions.updateProduct({
+        //     data: body,
+        //     fbId: value?.fbId
+        // }))
+    }
+
+    const _getTotalPrice = () => {
+        let price = 0
+        value.products.map((val) => {
+            price += parseInt(val.price);
+        })
+        return price;
     }
 
     return (
@@ -46,25 +54,30 @@ export default function OrderCard({ index, value }) {
             alignItems: 'center',
         }}>
             <div style={{
-                width: '20%',
+                width: '10%',
                 display: 'flex',
                 justifyContent: 'center'
             }}>{index + 1}</div>
             <div style={{
-                width: '40%',
-            }}>{value?.title || '-'}
+                width: '20%',
+                display: 'flex',
+                justifyContent: 'center'
+            }}>{value?.id}</div>
+            <div style={{
+                width: '35%',
+            }}>{value?.senderName || '-'}
             </div>
             <div style={{
                 width: '10%',
                 textAlign: 'center'
-            }}>{value?.price + '₺' || '-'}</div>
+            }}>{_getTotalPrice() + '₺' || '-'}</div>
             <div style={{
                 width: '20%',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center'
             }}>
-                <ProductSwitch state={value?.isActive} changeState={_changeState} />
+                <ProductSwitch state={value?.completed} changeState={_changeState} />
             </div>
             <div style={{
                 width: '10%',
