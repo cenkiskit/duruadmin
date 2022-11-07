@@ -18,7 +18,7 @@ export default function OrderDetails() {
     }
 
     return !selectedOrder ? null : (
-        <div onClick={() => console.log('clicked')} style={{
+        <div style={{
             position: 'fixed',
             width: '100%',
             height: '100%',

@@ -21,6 +21,9 @@ function* watcherDeleteProduct() {
     yield takeEvery(InitialTypes.DELETE_PRODUCT, workerDeleteProduct);
 }
 
+function* watcherUpdateCampaign() {
+    yield takeEvery(InitialTypes.UPDATE_CAMPAIGN, workerUpdateCampaign);
+}
 
 function* workerInitial() {
     try {
@@ -91,12 +94,12 @@ function* workerUpdateProduct(action) {
         if (data.imageList.length > 0) {
             let newImageList = [];
             data.imageList.map((value) => {
-                if(!value?.name){
+                if (!value?.name) {
                     newImageList.push({
                         data_url: value?.data_url,
                         name: value?.file?.name
                     })
-                }else{
+                } else {
                     newImageList.push(value);
                 }
                 return null
@@ -124,16 +127,52 @@ function* workerUpdateProduct(action) {
 function* workerGetProductList() {
     const productCollection = collection(db, 'products');
     const productSnapshot = yield getDocs(productCollection);
+    let campaigns = null;
     const productList = productSnapshot.docs.map(doc => {
-        const product = doc.data();
-        product.fbId = doc.id;
-        return product;
+        if (doc.id !== 'campaigns') {
+            const product = doc.data();
+            product.fbId = doc.id;
+            return product;
+        } else {
+            campaigns = doc.data();
+            return null;
+        }
     });
-    return productList;
+    if (campaigns?.campaignList) {
+        const list = campaigns?.campaignList;
+        yield put(InitialActions.setCampaignList(list.slice()));
+    }
+    return productList.filter(x => x);
 }
 
-function* workerAddCategory() {
+function* workerUpdateCampaign(action) {
+    try {
+        yield put(InitialActions.setLoading(true))
 
+        const data = action.payload?.data;
+        const campaignList = yield select(InitialSelectors.campaignList)
+        const item = campaignList.find(x => x.id === data?.id)
+        const index = campaignList.indexOf(item);
+
+        if (index > -1) {
+            campaignList[index] = data;
+        }
+
+        const currentCampaigns = yield doc(db, 'products', 'campaigns');
+        yield updateDoc(currentCampaigns, JSON.parse(JSON.stringify({
+            fbId: 'campaigns',
+            campaignList: campaignList.slice()
+        })));
+
+        yield put(InitialActions.setCampaignList(campaignList.slice()))
+        yield put(InitialActions.setAdded(true))
+        yield put(InitialActions.setLoading(false))
+
+    } catch (error) {
+        yield put(InitialActions.setLoading(false))
+        console.log('Update error:', error);
+
+    }
 }
 
 function* workerGetCategoryList() {
@@ -175,4 +214,5 @@ export const Sagas = [
     fork(watcherAddProduct),
     fork(watcherUpdateProduct),
     fork(watcherDeleteProduct),
+    fork(watcherUpdateCampaign)
 ];

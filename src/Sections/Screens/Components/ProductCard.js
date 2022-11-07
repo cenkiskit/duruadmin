@@ -32,7 +32,8 @@ export default function ProductCard({ index, value }) {
             value?.price,
             value?.imageList,
             value?.categoryId,
-            !value?.isActive
+            !value?.isActive,
+            value?.campaignId
         )
 
         dispatch(InitialActions.updateProduct({

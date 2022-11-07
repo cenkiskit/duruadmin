@@ -18,6 +18,7 @@ export default function CreateProduct() {
     const [content, setContent] = useState('');
     const [categoryId, setCategory] = useState(null);
     const [price, setPrice] = useState('');
+    const [campaignId, setCampaignId] = useState(0);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -36,7 +37,8 @@ export default function CreateProduct() {
             price,
             imageList,
             categoryId,
-            true
+            true,
+            campaignId
         )
 
         dispatch(InitialActions.addProduct(body))
@@ -50,6 +52,7 @@ export default function CreateProduct() {
             setContent('');
             setPrice('');
             setCategory('');
+            setCampaignId(0);
             navigate('/')
         }
     }, [added, dispatch])
@@ -77,6 +80,8 @@ export default function CreateProduct() {
                         content={content}
                         categoryId={categoryId}
                         price={price}
+                        campaignId={campaignId}
+                        setCampaignId={setCampaignId}
                         setTitle={setTitle}
                         setContent={setContent}
                         setCategory={setCategory}

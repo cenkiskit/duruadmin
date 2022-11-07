@@ -2,49 +2,40 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Form } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation, useNavigate, useParams, useRoutes } from 'react-router-dom'
-import AddProductForm from '../Components/AddProductForm'
+import { useLocation, useNavigate } from 'react-router-dom'
+import EditCampaignForm from '../Components/EditCampaignForm'
 import ImageUploadArea from '../Components/ImageUploadArea'
-import { productObj } from '../Entity/Models'
+import { campaignObj } from '../Entity/Models'
 import { ActionCreators as InitialActions, Selectors as InitialSelectors } from '../Redux/InitialRedux'
 
-export default function EditProduct() {
-
+export default function EditCampaign() {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const added = useSelector(InitialSelectors.added)
-    const productList = useSelector(InitialSelectors.productList)
 
     const { state } = useLocation();
     const { data } = state;
 
-    const [title, setTitle] = useState(data?.title);
-    const [content, setContent] = useState(data?.content);
-    const [categoryId, setCategory] = useState(data?.categoryId || 0);
-    const [price, setPrice] = useState(data?.price);
+    const [title, setTitle] = useState(data?.title || '');
     const [imageList, setImageList] = useState(data?.imageList || []);
-    const [campaignId, setCampaignId] = useState(data?.campaignId || 0);
-
-    useEffect(() => {
-        dispatch(InitialActions.fetchInitial());
-    }, [])
+    const [color, setColor] = useState(data?.color || 'black');
+    const [description, setDescription] = useState(data?.description || '');
+    const [order, setOrder] = useState(data?.order || -1);
 
     const _onPressSave = () => {
-        const body = productObj(
+        const body = campaignObj(
             data?.id,
             title,
-            content,
-            price,
+            description,
+            color,
             imageList,
-            categoryId,
             data?.isActive,
-            campaignId
+            order
         )
 
-        dispatch(InitialActions.updateProduct({
+        dispatch(InitialActions.updateCampaign({
             data: body,
-            fbId: data?.fbId
         }))
     }
 
@@ -53,11 +44,8 @@ export default function EditProduct() {
             dispatch(InitialActions.setAdded(false))
             setImageList([]);
             setTitle('');
-            setContent('');
-            setPrice('');
-            setCategory('');
-            setCampaignId(0);
-            navigate('/');
+            setDescription('');
+            navigate('/kampanyalar');
         }
     }, [added, dispatch])
 
@@ -79,20 +67,19 @@ export default function EditProduct() {
                     boxShadow: '0px 0px 14px -1px rgba(224, 224, 224, 0.69)'
                 }}>
 
-                    <AddProductForm
+                    <EditCampaignForm
+                        color={color}
                         title={title}
-                        content={content}
-                        categoryId={categoryId}
-                        price={price}
-                        campaignId={campaignId}
-                        setCampaignId={setCampaignId}
+                        description={description}
+                        order={order}
+                        setOrder={setOrder}
+                        setColor={setColor}
                         setTitle={setTitle}
-                        setContent={setContent}
-                        setCategory={setCategory}
-                        setPrice={setPrice} />
+                        setDescription={setDescription} />
 
-                    <Form.Label>Ürün Fotoğrafları</Form.Label>
+                    <Form.Label style={{ marginTop: 20 }}>Kampanya Fotoğrafı</Form.Label>
                     <ImageUploadArea
+                        onlyOne
                         images={imageList}
                         setImageList={setImageList} />
                     <div style={{
@@ -103,7 +90,7 @@ export default function EditProduct() {
                     }}>
                         <Button
                             onClick={_onPressSave} variant="primary" type="submit">
-                            Ürün Güncelle
+                            Kampanya Güncelle
                         </Button>
                     </div>
                 </div>

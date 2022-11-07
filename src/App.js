@@ -18,6 +18,8 @@ import EditProduct from './Sections/Screens/EditProduct';
 import Alert from './Sections/Components/Alert';
 import Orders from './Sections/Screens/Orders';
 import OrderDetails from './Sections/Screens/Components/OrderDetails';
+import CampaignList from './Sections/Screens/CampaignList';
+import EditCampaign from './Sections/Screens/EditCampaign';
 
 const { store } = CreateStore();
 
@@ -36,8 +38,9 @@ function App() {
             <Route index element={<ListProducts />} />
             <Route path='yeni-urun' element={<CreateProduct />} />
             <Route path='siparisler' element={<Orders />} />
+            <Route path='kampanyalar' element={<CampaignList />} />
             <Route path="urun-duzenle/:productId" element={<EditProduct />} />
-
+            <Route path="kampanya-duzenle/:campaignId" element={<EditCampaign />} />
           </Routes>
         </BrowserRouter>
       </div>

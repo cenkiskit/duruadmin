@@ -6,7 +6,8 @@ const INITIAL_STATE = {
     added: false,
     productList: [],
     categoryList: [],
-    deleteAlert: null
+    deleteAlert: null,
+    campaignList: []
 };
 
 export const Types = {
@@ -18,7 +19,9 @@ export const Types = {
     SET_LOADING: NS + '/set-loading',
     SET_ADDED: NS + '/set-addded',
     SET_DELETE_ALERT: NS + '/set-delete-alert',
-    DELETE_PRODUCT: NS + '/delete-product'
+    DELETE_PRODUCT: NS + '/delete-product',
+    SET_CAMPAIGN_LIST: NS + '/set-campaign-list',
+    UPDATE_CAMPAIGN: NS + '/update-campaign'
 };
 
 export const Selectors = {
@@ -28,6 +31,7 @@ export const Selectors = {
     categoryList: state => state[NS].categoryList,
     added: state => state[NS].added,
     deleteAlert: state => state[NS].deleteAlert,
+    campaignList: state => state[NS].campaignList,
 };
 
 export const ActionCreators = {
@@ -67,6 +71,14 @@ export const ActionCreators = {
         type: Types.DELETE_PRODUCT,
         payload: data,
     }),
+    setCampaignList: data => ({
+        type: Types.SET_CAMPAIGN_LIST,
+        payload: data,
+    }),
+    updateCampaign: data => ({
+        type: Types.UPDATE_CAMPAIGN,
+        payload: data,
+    }),
 };
 
 export const Reducer = (state = INITIAL_STATE, action) => {
@@ -79,6 +91,11 @@ export const Reducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 loading: action.payload
+            };
+        case Types.SET_CAMPAIGN_LIST:
+            return {
+                ...state,
+                campaignList: action.payload
             };
         case Types.SET_CATEGORY_LIST:
             return {

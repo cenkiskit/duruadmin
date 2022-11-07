@@ -1,7 +1,7 @@
 import React from 'react';
 import ImageUploading from 'react-images-uploading';
 
-const ImageUploadArea = ({ setImageList, images }) => {
+const ImageUploadArea = ({ setImageList, images, onlyOne }) => {
 
     const maxNumber = 69;
 
@@ -16,7 +16,7 @@ const ImageUploadArea = ({ setImageList, images }) => {
     return (
         <div className="App">
             <ImageUploading
-                multiple
+                multiple={!onlyOne}
                 value={images}
                 onChange={onChange}
                 maxNumber={maxNumber}
@@ -82,10 +82,15 @@ const ImageUploadArea = ({ setImageList, images }) => {
                                                 </div>
                                             </div>
                                         )) :
-                                        <div style={{
-                                        }}>
-                                            Fotoğrafları sürükleyin veya tıklayıp seçin.
-                                        </div>
+                                        onlyOne ?
+                                            <div style={{
+                                            }}>
+                                                Kampanya fotoğrafını sürükleyin veya tıklayıp seçin.
+                                            </div> :
+                                            <div style={{
+                                            }}>
+                                                Fotoğrafları sürükleyin veya tıklayıp seçin.
+                                            </div>
                                 }
                             </div>
 

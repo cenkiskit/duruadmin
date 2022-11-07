@@ -25,7 +25,7 @@ export default function Header() {
                     width: 150,
                     justifyContent: 'center',
                     alignItems: 'center',
-                    cursor:'pointer',
+                    cursor: 'pointer',
                     display: 'flex',
                     color: 'white',
                     boxShadow: '1px 2px 9px rgba(0,0,0,0.1)',
@@ -33,7 +33,7 @@ export default function Header() {
                 }}>
                 <span style={{
                     color: '#3bb77e',
-                    textAlign:'center'
+                    textAlign: 'center'
                 }}>Ürünleri Listele</span>
             </a>
 
@@ -45,7 +45,7 @@ export default function Header() {
                     justifyContent: 'center',
                     alignItems: 'center',
                     display: 'flex',
-                    cursor:'pointer',
+                    cursor: 'pointer',
                     marginLeft: 5,
                     color: 'white',
                     boxShadow: '1px 2px 9px rgba(0,0,0,0.1)',
@@ -53,7 +53,7 @@ export default function Header() {
                 }}>
                 <span style={{
                     color: '#3bb77e',
-                    textAlign:'center'
+                    textAlign: 'center'
                 }}>Ürün Ekle</span>
             </a>
             <a
@@ -64,7 +64,7 @@ export default function Header() {
                     justifyContent: 'center',
                     alignItems: 'center',
                     display: 'flex',
-                    cursor:'pointer',
+                    cursor: 'pointer',
                     marginLeft: 5,
                     color: 'white',
                     boxShadow: '1px 2px 9px rgba(0,0,0,0.1)',
@@ -72,22 +72,28 @@ export default function Header() {
                 }}>
                 <span style={{
                     color: '#3bb77e',
-                    textAlign:'center'
+                    textAlign: 'center'
                 }}>Siparişler</span>
             </a>
-            {/* <a style={{
-                backgroundColor: '#3bb77e',
-                width: 200,
-                height: 50,
-                justifyContent: 'center',
-                alignItems: 'center',
-                display: 'flex',
-                marginLeft: 5,
-                color: 'white'
+            <a
+                onClick={() => navigate('/kampanyalar')}
+                style={{
+                    // backgroundColor: '#3bb77e',
+                    width: 150,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    display: 'flex',
+                    cursor: 'pointer',
+                    marginLeft: 5,
+                    color: 'white',
+                    boxShadow: '1px 2px 9px rgba(0,0,0,0.1)',
 
-            }}>
-                <span>Ürünleri Listele</span>
-            </a> */}
+                }}>
+                <span style={{
+                    color: '#3bb77e',
+                    textAlign: 'center'
+                }}>Kampanyalar</span>
+            </a>
         </div>
     )
 }

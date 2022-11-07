@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import Form from 'react-bootstrap/Form';
 import { InputGroup } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
+import { Selectors } from '../Redux/InitialRedux';
 
 export default function AddProductForm(props) {
 
@@ -10,10 +12,14 @@ export default function AddProductForm(props) {
         setPrice,
         setCategory,
         title,
+        setCampaignId,
         content,
         price,
         categoryId,
+        campaignId,
     } = props;
+
+    const campaignList = useSelector(Selectors.campaignList);
 
     const _setTitle = (e) => {
         const value = e.nativeEvent.target.value;
@@ -33,11 +39,27 @@ export default function AddProductForm(props) {
     const changeCategory = (e) => {
         const value = e.nativeEvent.target.value;
 
-        if(value !== 'Kategori Seçiniz'){
+        if (value !== 'Kategori Seçiniz') {
             setCategory(value);
-        }else{
+        } else {
             setCategory('0');
         }
+    }
+
+    const changeCampaign = (e) => {
+        const value = e.nativeEvent.target.value;
+
+        if (value !== 'Kampanya Seçiniz') {
+            setCampaignId(value);
+        } else {
+            setCampaignId(0);
+        }
+    }
+
+    const _renderCampaigns = () => {
+        return campaignList.map((value, index) => {
+            return value?.isActive && <option value={index + 1}>{value?.title}</option>
+        })
     }
 
     return (
@@ -59,7 +81,7 @@ export default function AddProductForm(props) {
             </Form.Group>
 
             <Form.Label>Kategori</Form.Label>
-            <Form.Select aria-label="Kategori Seçiniz" value={categoryId || 0}
+            <Form.Select aria-label="Kategori Seçiniz" value={categoryId || 0}
                 onChange={(e) => changeCategory(e)}>
                 <option>Kategori Seçiniz</option>
                 <option value="1">Saksı</option>
@@ -68,6 +90,13 @@ export default function AddProductForm(props) {
                 <option value="4">Teraryum</option>
                 <option value="5">Buket</option>
                 <option value="6">Aranjman</option>
+            </Form.Select>
+            <div style={{ marginTop: 20 }} />
+            <Form.Label>Kampanya</Form.Label>
+            <Form.Select aria-label="Kampanya Seçiniz" value={campaignId || 0}
+                onChange={(e) => changeCampaign(e)}>
+                <option>Kampanya Seçiniz</option>
+                {_renderCampaigns()}
             </Form.Select>
 
             <Form.Label style={{
