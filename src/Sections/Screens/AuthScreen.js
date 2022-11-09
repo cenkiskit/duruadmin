@@ -68,7 +68,8 @@ export default function AuthScreen() {
                 marginTop: 20,
                 display: 'flex',
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
+                cursor: 'pointer'
             }}>
                 Giriş
             </div>
