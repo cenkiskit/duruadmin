@@ -55,7 +55,7 @@ export default function AuthScreen() {
                     <Form.Control type="email" placeholder="isim@örnek.com" />
                 </FloatingLabel>
                 <FloatingLabel onChange={_setPassword} controlId="floatingPassword" label="Şifre">
-                    <Form.Control type="password" placeholder="Şifre" />
+                    <Form.Control type="password" placeholder="Şifre" autoComplete='current-password' />
                 </FloatingLabel>
             </Form>
             <div onClick={_login} style={{
