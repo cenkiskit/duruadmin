@@ -40,7 +40,7 @@ export default function AddProductForm(props) {
         const value = e.nativeEvent.target.value;
 
         if (value !== 'Kategori Seçiniz') {
-            setCategory(value);
+            setCategory(value.toString());
         } else {
             setCategory('0');
         }
