@@ -11,7 +11,7 @@ export default function LoadingOverlay() {
             backgroundColor: 'rgba(255,255,255,0.5)',
             width: '100%',
             height: '100%',
-            position: 'absolute',
+            position: 'fixed',
             zIndex: 100,
             justifyContent: 'center',
             alignItems: 'center',

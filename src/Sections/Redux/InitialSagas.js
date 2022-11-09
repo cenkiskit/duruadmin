@@ -1,8 +1,9 @@
 import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc } from 'firebase/firestore/lite';
 import { call, fork, put, select, takeEvery } from 'redux-saga/effects';
-import { db } from '../../firebase';
+import { auth, db } from '../../firebase';
 import { ActionCreators as InitialActions, Selectors as InitialSelectors, Types as InitialTypes } from './InitialRedux';
 import { v4 as uuidv4 } from 'uuid';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 
 function* watcherInitial() {
@@ -25,10 +26,27 @@ function* watcherUpdateCampaign() {
     yield takeEvery(InitialTypes.UPDATE_CAMPAIGN, workerUpdateCampaign);
 }
 
+function* watcherAuth() {
+    yield takeEvery(InitialTypes.AUTH, workerAuth);
+}
+
+function* workerAuth(action) {
+    try {
+        const email = action.payload?.email;
+        const password = action.payload?.password;
+        yield signInWithEmailAndPassword(auth, email, password);
+
+        yield put(InitialActions.setConnected(true))
+    } catch (error) {
+        console.log('Auth error:', error);
+    }
+}
+
 function* workerInitial() {
     try {
         const list = yield select(InitialSelectors.productList);
         const loading = yield select(InitialSelectors.loading)
+        yield call(workerAuth)
 
         if (list.length === 0 && !loading) {
             yield put(InitialActions.setLoading(true))
@@ -38,7 +56,7 @@ function* workerInitial() {
         }
     } catch (error) {
         yield put(InitialActions.setLoading(false))
-        console.log('Initial error.', error);
+        console.log('Initial error:', error);
     }
 }
 
@@ -127,21 +145,19 @@ function* workerUpdateProduct(action) {
 function* workerGetProductList() {
     const productCollection = collection(db, 'products');
     const productSnapshot = yield getDocs(productCollection);
-    let campaigns = null;
+    let campaigns = [];
     const productList = productSnapshot.docs.map(doc => {
-        if (doc.id !== 'campaigns') {
-            const product = doc.data();
-            product.fbId = doc.id;
-            return product;
+        const data = doc.data();
+        data.fbId = doc.id;
+        if (!data?.isCampaign) {
+            return data;
         } else {
-            campaigns = doc.data();
+            campaigns.push(data);
             return null;
         }
     });
-    if (campaigns?.campaignList) {
-        const list = campaigns?.campaignList;
-        yield put(InitialActions.setCampaignList(list.slice()));
-    }
+    campaigns.sort((a, b) => a?.order - b?.order)
+    yield put(InitialActions.setCampaignList(campaigns.slice()));
     return productList.filter(x => x);
 }
 
@@ -150,27 +166,39 @@ function* workerUpdateCampaign(action) {
         yield put(InitialActions.setLoading(true))
 
         const data = action.payload?.data;
+        const fbId = action.payload?.fbId;
         const campaignList = yield select(InitialSelectors.campaignList)
         const item = campaignList.find(x => x.id === data?.id)
         const index = campaignList.indexOf(item);
 
+        if (data?.imageList.length > 0) {
+            if (!data?.imageList[0]?.name) {
+                data.imageList =
+                    [
+                        {
+                            data_url: data.imageList[0].data_url,
+                            name: data.imageList[0].file.name
+                        }
+                    ]
+            }
+        }
+
+        const currentCampaigns = yield doc(db, 'products', fbId);
+        yield updateDoc(currentCampaigns, JSON.parse(JSON.stringify(data)));
+
+        data.fbId = fbId;
         if (index > -1) {
             campaignList[index] = data;
         }
 
-        const currentCampaigns = yield doc(db, 'products', 'campaigns');
-        yield updateDoc(currentCampaigns, JSON.parse(JSON.stringify({
-            fbId: 'campaigns',
-            campaignList: campaignList.slice()
-        })));
-
+        campaignList.sort((a, b) => a?.order - b?.order)
         yield put(InitialActions.setCampaignList(campaignList.slice()))
         yield put(InitialActions.setAdded(true))
         yield put(InitialActions.setLoading(false))
 
     } catch (error) {
         yield put(InitialActions.setLoading(false))
-        console.log('Update error:', error);
+        console.log('Update error:', error?.toJSON ? error.toJSON() : JSON.stringify(error));
 
     }
 }
@@ -214,5 +242,6 @@ export const Sagas = [
     fork(watcherAddProduct),
     fork(watcherUpdateProduct),
     fork(watcherDeleteProduct),
-    fork(watcherUpdateCampaign)
+    fork(watcherUpdateCampaign),
+    fork(watcherAuth)
 ];

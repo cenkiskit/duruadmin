@@ -1,16 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import { BiEdit } from 'react-icons/bi'
-import { MdDelete } from 'react-icons/md'
+import React from 'react'
 import { useDispatch } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { campaignObj } from '../../Entity/Models'
-import { ActionCreators } from '../../Redux/InitialRedux'
 import ProductSwitch from './ProductSwitch'
-import { ActionCreators as InitialActions, Selectors as InitialSelectors } from '../../Redux/InitialRedux'
-import { VscCheck, VscClose } from 'react-icons/vsc'
+import { ActionCreators as InitialActions } from '../../Redux/InitialRedux'
 import { BiDetail } from 'react-icons/bi'
-import { ActionCreators as OrderActions } from '../../Redux/OrderRedux'
-import OrderDetails from './OrderDetails'
 
 export default function CampaignCard({ index, value }) {
     const navigate = useNavigate()
@@ -24,11 +18,13 @@ export default function CampaignCard({ index, value }) {
             value?.color,
             value?.imageList || [],
             !value?.isActive,
-            value?.order
+            value?.order,
+            value?.isCampaign
         )
 
         dispatch(InitialActions.updateCampaign({
             data: body,
+            fbId: value?.fbId
         }))
     }
 

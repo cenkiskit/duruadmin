@@ -20,6 +20,8 @@ import Orders from './Sections/Screens/Orders';
 import OrderDetails from './Sections/Screens/Components/OrderDetails';
 import CampaignList from './Sections/Screens/CampaignList';
 import EditCampaign from './Sections/Screens/EditCampaign';
+import AuthScreen from './Sections/Screens/AuthScreen';
+import Navigator from './Navigation/Navigator';
 
 const { store } = CreateStore();
 
@@ -29,20 +31,7 @@ function App() {
       <div style={{
         flex: 1
       }}>
-        <BrowserRouter>
-          <LoadingOverlay />
-          <OrderDetails />
-          <Header />
-          <Alert />
-          <Routes>
-            <Route index element={<ListProducts />} />
-            <Route path='yeni-urun' element={<CreateProduct />} />
-            <Route path='siparisler' element={<Orders />} />
-            <Route path='kampanyalar' element={<CampaignList />} />
-            <Route path="urun-duzenle/:productId" element={<EditProduct />} />
-            <Route path="kampanya-duzenle/:campaignId" element={<EditCampaign />} />
-          </Routes>
-        </BrowserRouter>
+        <Navigator/>
       </div>
     </Provider>
   )

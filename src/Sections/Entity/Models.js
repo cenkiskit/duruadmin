@@ -27,7 +27,8 @@ export const campaignObj = (
     color,
     imageList,
     isActive,
-    order
+    order,
+    isCampaign
 ) => {
     return {
         id: id,
@@ -36,7 +37,8 @@ export const campaignObj = (
         color: color,
         imageList: imageList,
         isActive: isActive,
-        order: order
+        order: order,
+        isCampaign: isCampaign
     }
 }
 

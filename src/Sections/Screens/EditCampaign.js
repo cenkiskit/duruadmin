@@ -31,11 +31,13 @@ export default function EditCampaign() {
             color,
             imageList,
             data?.isActive,
-            order
+            order,
+            true
         )
 
         dispatch(InitialActions.updateCampaign({
             data: body,
+            fbId: data?.fbId
         }))
     }
 

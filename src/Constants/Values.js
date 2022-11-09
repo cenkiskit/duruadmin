@@ -1,5 +1,4 @@
 export const campaigns = {
-    fbId: 'campaigns',
     campaignList: [
         {
             id: 1,

@@ -52,7 +52,7 @@ export default function EditCampaignForm(props) {
             <Form.Group className="mb-3" controlId="formBasicPassword">
                 <Form.Label>Gösterim Sırası</Form.Label>
                 <Form.Control
-                    value={order || -1}
+                    value={order}
                     onChange={_setOrder} placeholder="Açıklama" />
             </Form.Group>
             <Form.Label>Kampanya Rengi</Form.Label>

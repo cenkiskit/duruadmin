@@ -7,7 +7,8 @@ const INITIAL_STATE = {
     productList: [],
     categoryList: [],
     deleteAlert: null,
-    campaignList: []
+    campaignList: [],
+    connected: false
 };
 
 export const Types = {
@@ -21,7 +22,9 @@ export const Types = {
     SET_DELETE_ALERT: NS + '/set-delete-alert',
     DELETE_PRODUCT: NS + '/delete-product',
     SET_CAMPAIGN_LIST: NS + '/set-campaign-list',
-    UPDATE_CAMPAIGN: NS + '/update-campaign'
+    UPDATE_CAMPAIGN: NS + '/update-campaign',
+    AUTH: NS + '/auth',
+    SET_CONNECTED: NS + '/set-connected'
 };
 
 export const Selectors = {
@@ -32,6 +35,7 @@ export const Selectors = {
     added: state => state[NS].added,
     deleteAlert: state => state[NS].deleteAlert,
     campaignList: state => state[NS].campaignList,
+    connected: state => state[NS].connected,
 };
 
 export const ActionCreators = {
@@ -79,6 +83,14 @@ export const ActionCreators = {
         type: Types.UPDATE_CAMPAIGN,
         payload: data,
     }),
+    signIn: data => ({
+        type: Types.AUTH,
+        payload: data
+    }),
+    setConnected: data => ({
+        type: Types.SET_CONNECTED,
+        payload: data
+    })
 };
 
 export const Reducer = (state = INITIAL_STATE, action) => {
@@ -116,6 +128,11 @@ export const Reducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 deleteAlert: action.payload
+            };
+        case Types.SET_CONNECTED:
+            return {
+                ...state,
+                connected: action.payload
             };
         default:
             return state;
