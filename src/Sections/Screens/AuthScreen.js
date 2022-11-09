@@ -52,7 +52,7 @@ export default function AuthScreen() {
                     className="mb-3"
                     onChange={_setEmail}
                 >
-                    <Form.Control type="email" placeholder="isim@örnek.com" />
+                    <Form.Control type="email" placeholder="isim@örnek.com" autoComplete='username' />
                 </FloatingLabel>
                 <FloatingLabel onChange={_setPassword} controlId="floatingPassword" label="Şifre">
                     <Form.Control type="password" placeholder="Şifre" autoComplete='current-password' />
