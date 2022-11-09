@@ -32,11 +32,13 @@ function* watcherAuth() {
 
 function* workerAuth(action) {
     try {
-        const email = action.payload?.email;
-        const password = action.payload?.password;
-        yield signInWithEmailAndPassword(auth, email, password);
+        if (action) {
+            const email = action.payload?.email;
+            const password = action.payload?.password;
+            yield signInWithEmailAndPassword(auth, email, password);
 
-        yield put(InitialActions.setConnected(true))
+            yield put(InitialActions.setConnected(true))
+        }
     } catch (error) {
         console.log('Auth error:', error);
     }
