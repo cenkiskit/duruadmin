@@ -21,8 +21,8 @@ export default function Navigator() {
         <BrowserRouter>
             <LoadingOverlay />
             <OrderDetails />
-            <Header />
             <Alert />
+            <Header />
 
             <Routes>
                 <Route index element={<ListProducts />} />
